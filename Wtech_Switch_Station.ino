@@ -13,46 +13,46 @@ bool shouldSaveConfig = false;
 char mqtt_server[40]=".duckdns.org";
 char mqtt_user[40]="homeassistant";
 char mqtt_pass[40]="";
-char mqtt_deviceid[40]="relay1";
+char mqtt_deviceid[40]="relay2";
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-const byte ledPin5 = D5;
-const byte ledPin6 = D6;
-const byte ledPin7 = D7;
+const byte ledPin5 = 5;
+//const byte ledPin6 = D6;
+//const byte ledPin7 = D7;
 
-const int buttond1 = D1;
-const int buttond2 = D2;
-const int buttond3 = D3;
-const int resetpin = D4;
+const int buttond1 = 13;
+/*const int buttond2 = D2;
+const int buttond3 = D3;*/
+const int resetpin = 16;
 int b=0;
 int st;
 int a=0;
 
 int tthaicu;
-int tthai1cu;
-int tthai2cu;
-int tthai3cu;
+//int tthai1cu;
+//int tthai2cu;
+//int tthai3cu;
 
 
 
 int stt =1 ;
-int stt1=1;
-int stt2 =1 ;
+//int stt1=1;
+//int stt2 =1 ;
 int stt3=1;
 int sttold =1;
-int sttold1=1;
-int sttold2 =1;
+//int sttold1=1;
+//int sttold2 =1;
 int sttold3=1;
 
 
 int sttoldkwf=1;
-int sttoldkwf1=1;
-int sttoldkwf2=1;
+//int sttoldkwf1=1;
+//int sttoldkwf2=1;
 int sttoldkwf3=1;
 int sttkwf;
-int sttkwf1;
-int sttkwf2;
+//int sttkwf1;
+//int sttkwf2;
 int sttkwf3;
 
 char message_buff[100];
@@ -84,7 +84,7 @@ void reset()
 
       WiFiManager wifiManager;
 
-      wifiManager.setConfigPortalTimeout(180);
+      wifiManager.setConfigPortalTimeout(300);
       wifiManager.setSaveConfigCallback(saveConfigCallback);
 
 
@@ -139,8 +139,8 @@ void onoffnwf()
 {
           
     sttkwf = digitalRead(buttond1);
-    sttkwf1 = digitalRead(buttond2);
-    sttkwf2 = digitalRead(buttond3);
+  //  sttkwf1 = digitalRead(buttond2);
+    //sttkwf2 = digitalRead(buttond3);
     
           //d1 tuong ung d5
           
@@ -167,7 +167,7 @@ void onoffnwf()
     }
 
 //d2 tuong ung d6
-    
+    /*
     {
           
           if (sttkwf1 != sttoldkwf1)
@@ -210,7 +210,7 @@ void onoffnwf()
           else if (sttkwf2 == sttoldkwf2)
                sttoldkwf2 = sttkwf2;
     }
-
+*/
 }
     
 void setup_wifi() 
@@ -324,23 +324,23 @@ void callback(char *topic, byte *payload, unsigned int length)
 
     msgString = String(message_buff);
     
-    if (topicStr == "relay/test")
+    if (topicStr == "relay2/test")
 {
         if (msgString == "1")
         {
             digitalWrite(ledPin5, LOW); // PIN HIGH will switch OFF the relay
-            client.publish("relay/teststate","1");
+            client.publish("relay2/teststate","1");
             
         }
         if (msgString == "0")
         {
             digitalWrite(ledPin5, HIGH); // PIN LOW will switch ON the relay
-            client.publish("relay/teststate","0");
+            client.publish("relay2/teststate","0");
             
         }
 }
 //test1
-    else if (topicStr == "relay/test1")
+  /*  else if (topicStr == "relay/test1")
     { // write your unique ID here
         if (msgString == "1")
         {
@@ -374,7 +374,7 @@ void callback(char *topic, byte *payload, unsigned int length)
         }
     }
  //test3
-
+*/
  
 }
 void reconnect()
@@ -393,14 +393,14 @@ void reconnect()
         if (client.connect(mqtt_deviceid,mqtt_user,mqtt_pass))
       
             {
-            client.subscribe("relay/teststate");
-            client.subscribe("relay/teststate1");
-            client.subscribe("relay/teststate2");
+            client.subscribe("relay2/teststate");
+           // client.subscribe("relay/teststate1");
+            //client.subscribe("relay/teststate2");
             
-            client.subscribe("relay/test");
-            client.subscribe("relay/test1");
+            client.subscribe("relay2/test");
+            //client.subscribe("relay/test1");
 
-            client.subscribe("relay/test2");
+            //client.subscribe("relay/test2");
             
             Serial.println("mqtt connect");
             }
@@ -420,13 +420,13 @@ void setup()
     delay(10);
     pinMode(LED_BUILTIN, OUTPUT);
      
-    pinMode(buttond2, INPUT_PULLUP);
+    //pinMode(buttond2, INPUT_PULLUP);
     pinMode(buttond1, INPUT_PULLUP);
-    pinMode(buttond3, INPUT_PULLUP);
+   // pinMode(buttond3, INPUT_PULLUP);
     pinMode(resetpin, INPUT_PULLUP);
     pinMode(ledPin5, OUTPUT);
-    pinMode(ledPin6, OUTPUT);
-    pinMode(ledPin7, OUTPUT);
+   // pinMode(ledPin6, OUTPUT);
+    //pinMode(ledPin7, OUTPUT);
     
     Serial.begin(115200);
     
@@ -454,8 +454,8 @@ void loop()
 
    
     stt = digitalRead(buttond1);
-    stt1 = digitalRead(buttond2);
-    stt2 = digitalRead(buttond3);
+    //stt1 = digitalRead(buttond2);
+    //stt2 = digitalRead(buttond3);
    
  st=digitalRead(resetpin);
 
@@ -466,7 +466,7 @@ void loop()
  }
     //test1
     {
-    if (topicStr == "relay/teststate")
+    if (topicStr == "relay2/teststate")
     { 
         if (msgString == "1")
         {
@@ -481,7 +481,7 @@ void loop()
     }
     
     }
-     
+     /*(
      //test2
      
      {
@@ -501,9 +501,9 @@ void loop()
     
     }
     
-    
+    */
     //test3
-         
+   /*      
      {
     if (topicStr == "relay/teststate2")
     { 
@@ -520,7 +520,7 @@ void loop()
     }
     
     }
-    
+    */
  //test4
 
      
@@ -536,13 +536,13 @@ void loop()
         
         {
             digitalWrite(ledPin5, HIGH); // PIN HIGH will switch OFF the relay
-            client.publish("relay/teststate","0");
+            client.publish("relay2/teststate","0");
             
         }
         if (tthaicu == 0)
         {
             digitalWrite(ledPin5, LOW); // PIN LOW will switch ON the relay
-            client.publish("relay/teststate","1");
+            client.publish("relay2/teststate","1");
             
         }
       }
@@ -560,7 +560,7 @@ else if (stt == sttold)
     }
 
 
-
+/*
     //MAINSTATE2
 
 {       
@@ -630,7 +630,7 @@ else if (stt2 == sttold2)
 
     //MAINSTATE4
 
-   
+  */ 
 
 
   
